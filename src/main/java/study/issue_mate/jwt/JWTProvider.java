@@ -62,4 +62,14 @@ public class JWTProvider {
 
         return false;
     }
+
+    /**
+     * access token의 남은 유효시간을 반환하는 메소드
+     * 로그아웃 시 access token의 남은 유효시간을 확인하기 위해서는 토큰의 만료 시간(expiration)을 가져와서 현재 시간과의 차이를 계산하는 메소드 필요
+     */
+    public long getRemainingMillis(String token) {
+        Date expiration = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token)
+            .getPayload().getExpiration();
+        return expiration.getTime() - System.currentTimeMillis();
+    }
 }
