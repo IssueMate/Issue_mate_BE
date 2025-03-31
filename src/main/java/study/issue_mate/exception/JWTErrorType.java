@@ -15,7 +15,9 @@ public enum JWTErrorType implements ErrorCode {
 
     INVALID_REFRESH_TOKEN(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
     EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다."),
-    EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "로그인이 만료되었습니다. 다시 로그인 해주세요.");
+    EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "로그인이 만료되었습니다. 다시 로그인 해주세요."),
+
+    BLACKLISTED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "블랙리스트에 등록된 토큰입니다.");
 
     private final HttpStatus status;
     private final String desc;

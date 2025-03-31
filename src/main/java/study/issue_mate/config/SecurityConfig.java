@@ -1,5 +1,6 @@
 package study.issue_mate.config;
 
+import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,22 +21,20 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import study.issue_mate.jwt.CustomLogoutFilter;
 import study.issue_mate.jwt.JWTFilter;
 import study.issue_mate.jwt.JWTProvider;
+import study.issue_mate.jwt.JwtBlacklistService;
 import study.issue_mate.jwt.LoginFilter;
 import study.issue_mate.util.RedisUtil;
-
-import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Value("${next_public_base_url}")
-    private String next_public_base_url;
-
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JWTProvider jwtProvider;
     private final RedisUtil redisUtil;
+    @Value("${next_public_base_url}")
+    private String next_public_base_url;
 //    private final AuthRepository authRepository; // 추후 제거
 
     @Bean
@@ -45,12 +44,13 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http,
+        JwtBlacklistService jwtBlacklistService) throws Exception {
         http.cors((cors) -> cors.configurationSource(corsConfigurationSource()));
 
         http.csrf((auth) -> auth.disable());
@@ -59,17 +59,28 @@ public class SecurityConfig {
         http.logout((auth) -> auth.disable());
 
         http.authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/health/**").permitAll()
-                        .requestMatchers("/login").permitAll()
-                        .requestMatchers("/reissue", "/refreshCheck").permitAll()
+                .requestMatchers("/health/**").permitAll()
+                .requestMatchers("/login").permitAll()
+                .requestMatchers("/reissue", "/refreshCheck").permitAll()
 //                .requestMatchers("/error").permitAll()
-                        .anyRequest().authenticated()
+                // Swagger 문서 접근 가능
+                .requestMatchers(
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**",
+                    "/v3/api-docs.yaml",
+                    "/v3/api-docs/swagger-config"
+                ).permitAll()
+
+                .anyRequest().authenticated()
         );
 //        http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtProvider, authRepository, cartRepository), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtProvider, redisUtil), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(new JWTFilter(jwtProvider), LoginFilter.class);
+        http.addFilterAt(
+            new LoginFilter(authenticationManager(authenticationConfiguration), jwtProvider,
+                redisUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JWTFilter(jwtProvider, jwtBlacklistService), LoginFilter.class);
 //        http.addFilterBefore(new CustomLogoutFilter(jwtProvider, authRepository), LogoutFilter.class);
-        http.addFilterBefore(new CustomLogoutFilter(jwtProvider, redisUtil), LogoutFilter.class);
+        http.addFilterBefore(new CustomLogoutFilter(jwtProvider, redisUtil, jwtBlacklistService),
+            LogoutFilter.class);
 
         // 인증되지 않은 사용자가 보호된 리소스에 액세스
 //        http.exceptionHandling((auth)-> auth.authenticationEntryPoint(new CustomAuthenticationEntryPoint()));
@@ -81,7 +92,7 @@ public class SecurityConfig {
 
         // jwt 방식은 STATELESS 방식
         http.sessionManagement((session) -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }

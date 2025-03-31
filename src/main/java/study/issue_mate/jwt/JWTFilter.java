@@ -21,6 +21,7 @@ import java.io.IOException;
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTProvider jwtProvider;
+    private final JwtBlacklistService jwtBlacklistService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -33,6 +34,12 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
         String accessToken = authorization.split(" ")[1];
+
+        // check if the token is blacklisted
+        if (jwtBlacklistService.isTokenBlacklisted(accessToken)) {
+            JwtExceptionResponseUtil.unAuthentication(response, JWTErrorType.BLACKLISTED_ACCESS_TOKEN);
+            return;
+        }
 
         try {
             jwtProvider.isTokenExpired(accessToken);
