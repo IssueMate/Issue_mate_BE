@@ -1,9 +1,6 @@
 package study.issue_mate.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import study.issue_mate.entity.base.BaseEntity;
 
 @Entity
@@ -16,6 +13,8 @@ public class IssueAttachedFile extends BaseEntity {
     private String file_saved_name;
     private String file_path;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Issue issue;
 
 //    private User uploadedBy;
 }

@@ -2,16 +2,17 @@ package study.issue_mate.entity;
 
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
+import study.issue_mate.entity.base.BaseEntity;
 
 import java.time.LocalDateTime;
 
-public class IssueHistory {
+public class IssueHistory extends BaseEntity {
     @Id @GeneratedValue
     @Column(name = "issue_history_id")
     private Long id;
 
     // 변경된 이슈
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "issue_id", nullable = false)
     private Issue issue;
 
@@ -22,15 +23,14 @@ public class IssueHistory {
     private String oldValue;
     private String newValue;
 
-    @ManyToOne
-    @JoinColumn(name = "changed_by", nullable = false)
-    private User changedBy;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "changed_by", nullable = false)
+//    private User changedBy;
 
     // 추후 변경 여부 확인
-    @CreatedDate
-    private LocalDateTime changedAt;
+//    @CreatedDate
+//    private LocalDateTime changedAt;
 
-    //
     public enum ChangeType {
         STATUS_CHANGE,      // 상태 변경
         ASSIGNEE_CHANGE,    // 담당자 변경

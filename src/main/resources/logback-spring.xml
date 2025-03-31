@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 공통 속성 -->
+    <property name="LOG_PATTERN" value="%green(%d{yyyy-MM-dd HH:mm:ss.SSS}) %magenta([%thread]) %highlight(%-5level) %cyan(%logger{36}) - %yellow(%msg%n)"/>
+    <property name="LOG_PATH" value="/log"/>
+
+<!--    <logger name="프로젝트 패키지명" level="DEBUG" />-->
+
+    <!-- 로컬 환경 설정 -->
+    <springProfile name="local">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${LOG_PATTERN}</pattern>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <!-- 개발 환경 설정 -->
+    <springProfile name="dev">
+        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+<!--            <file>${LOG_PATH}</file>-->
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_PATH}/log.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                <maxHistory>14</maxHistory>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+            <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+                <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+                    <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+                        <prettyPrint>true</prettyPrint>
+                    </jsonFormatter>
+                    <timestampFormat>yyyy-MM-dd' 'HH:mm:ss.SSS</timestampFormat>
+                    <timestampFormatTimezoneId>Asia/Seoul</timestampFormatTimezoneId>
+                    <appendLineSeparator>true</appendLineSeparator>
+                </layout>
+            </encoder>
+        </appender>
+
+        <logger name="study.issue_mate.common.aop.LogAspect" level="DEBUG">
+            <appender-ref ref="FILE"/>
+        </logger>
+
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${LOG_PATTERN}</pattern>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+</configuration>
