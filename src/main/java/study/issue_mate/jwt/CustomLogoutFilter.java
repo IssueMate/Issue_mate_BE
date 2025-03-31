@@ -24,6 +24,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
 
     private final JWTProvider jwtProvider;
     private final RedisUtil redisUtil;
+    private final JwtBlacklistService jwtBlacklistService;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -45,6 +46,15 @@ public class CustomLogoutFilter extends GenericFilterBean {
             return;
         }
 
+        // Access token 블랙리스트 처리
+        String accessToken = request.getHeader("Authorization");
+        if (accessToken != null && accessToken.startsWith("Bearer ")) {
+            accessToken = accessToken.substring(7);
+
+            // access token의 남은 유효시간을 가져오는 메소드
+            long expirationMillis = jwtProvider.getRemainingMillis(accessToken);
+            jwtBlacklistService.addTokenBlacklist(accessToken, expirationMillis);
+        }
         String refresh = null;
         Cookie[] cookies = request.getCookies();
         if(cookies != null) {
