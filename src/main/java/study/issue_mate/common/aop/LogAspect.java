@@ -1,5 +1,6 @@
 package study.issue_mate.common.aop;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -14,29 +15,41 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 @Aspect
 @Component
 @Slf4j
 public class LogAspect {
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Pointcut("execution(* *.*.controller..*.*(..))")
-    private void controllerLogging(){}
+    private void controllerLogging() {}
 
-//    @Pointcut("execution(* *..controller..*(..)) || execution(* *..service..*(..)) || execution(* *..repository..*(..))")
     @Pointcut("execution(* *.*.service..*(..))")
     public void serviceExceptionLogging() {}
 
+//    private void allComponentLogging() {}
+
     @Around("controllerLogging()")
     public Object aroundLog(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-
         final HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
                 .getRequest();
         final String method = request.getMethod();
         final String requestURI = request.getRequestURI();
         final Object[] args = proceedingJoinPoint.getArgs();
 
-        log.info("{} {} args={}", method, requestURI, args);
+//        log.info("{} {} args={}", method, requestURI, args);
+        Map<String, Object> logMessage = new HashMap<>();
+        logMessage.put("method", method);
+        logMessage.put("requestURI", requestURI);
+        logMessage.put("args", args);
+
+        // JSON 문자열로 변환
+        String jsonMessage = objectMapper.writeValueAsString(logMessage);
+
+        log.info(jsonMessage);
 
         return proceedingJoinPoint.proceed();
     }
@@ -49,17 +62,12 @@ public class LogAspect {
         String methodName = method.getName();
         Object[] args = joinPoint.getArgs();
 
-//        log.error("Error in service - Class: {}, Method: {}, Args: {}, Exception: {}, Message: {}",
-//                className, methodName, args, throwable.getClass().getName(), throwable.getMessage(), throwable);
+        log.error("Error in service - Class: {}, Method: {}, Args: {}, Exception: {}, Message: {}",
+                className, methodName, args, throwable.getClass().getName(), throwable.getMessage());
 
-        log.error("======================= Error in service =======================");
-        log.error("ClassName : {}",className);
-        log.error("Method: {}",methodName);
-        log.error("Args: {}", args);
-        log.error("Exception: {}",throwable.getClass().getName());
-        log.error("Message: {}",throwable.getMessage());
-//        log.error(throwable);
-        log.error("================================================================");
+        if(log.isDebugEnabled()){
+            log.debug("Exception occurred", throwable);
+        }
     }
 
 //    @Around("controllerLogging()")

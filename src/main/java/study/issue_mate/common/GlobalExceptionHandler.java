@@ -81,4 +81,16 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(ApiResponse.errorResponse(ex.getErrorType()), ex.getErrorType().getStatus());
     }
+
+//    private String ExceptionLogger(){
+//
+//        log.error("======================= Error in service =======================");
+//        log.error("ClassName : {}",className);
+//        log.error("Method: {}",methodName);
+//        log.error("Args: {}", args);
+//        log.error("Exception: {}",throwable.getClass().getName());
+//        log.error("Message: {}",throwable.getMessage());
+////        log.error(throwable);
+//        log.error("================================================================");
+//    }
 }

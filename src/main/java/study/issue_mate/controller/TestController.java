@@ -24,7 +24,7 @@ public class TestController {
         log.warn("warn message");
         log.error("error message");
 
-        return testService.test();
+        return testService.exceptionTest();
     }
 
     @PostMapping("/post")

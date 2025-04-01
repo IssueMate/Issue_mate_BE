@@ -14,6 +14,10 @@
             </encoder>
         </appender>
 
+        <logger name="study.issue_mate" level="DEBUG" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
         </root>
@@ -24,7 +28,7 @@
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 <!--            <file>${LOG_PATH}</file>-->
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>${LOG_PATH}/log.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                <fileNamePattern>${LOG_PATH}/log.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
                 <maxHistory>14</maxHistory>
                 <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                     <maxFileSize>10MB</maxFileSize>
@@ -40,17 +44,35 @@
                     <appendLineSeparator>true</appendLineSeparator>
                 </layout>
             </encoder>
+<!--            <encoder class="net.logstash.logback.encoder.LogstashEncoder">-->
+<!--                <fieldNames>-->
+<!--                    <timestamp>timestamp</timestamp>-->
+<!--                    <message>message</message>-->
+<!--                    <logger>logger</logger>-->
+<!--                    <thread>thread</thread>-->
+<!--                    <level>level</level>-->
+<!--                    <context>context</context>-->
+<!--                </fieldNames>-->
+<!--            </encoder>-->
         </appender>
 
         <logger name="study.issue_mate.common.aop.LogAspect" level="DEBUG">
             <appender-ref ref="FILE"/>
         </logger>
 
+<!--        <logger name="study.issue_mate.common.aop.ExceptionLogger" level="ERROR" additivity="false">-->
+<!--            <appender-ref ref="CONSOLE"/>-->
+<!--        </logger>-->
+
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
                 <pattern>${LOG_PATTERN}</pattern>
             </encoder>
         </appender>
+
+        <logger name="study.issue_mate" level="DEBUG" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
 
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
