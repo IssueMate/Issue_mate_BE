@@ -12,18 +12,15 @@ public class Project extends BaseEntity {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String key;
+    private String projectKey;
+
     @Column(nullable = false)
     private String title;
-    private String description;
 
-//    private LocalDate startDate;
-//    private LocalDate endDate;
+    private String description;
 
     // 추후 적용
     //private Status status;
 
-    //private User owner;
-
-
+//    private User owner;
 }

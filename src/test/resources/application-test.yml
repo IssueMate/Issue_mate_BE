@@ -14,10 +14,21 @@ spring:
         format_sql: true
         default_batch_fetch_size: 100
 
+  jwt:
+    secretkey: ${JWT_SECRETKEY}
+
   data:
     redis:
       host: localhost
       port: 6379
 
-#api_url: http://localhost:8080
-next_public_base_url: http://localhost:3000
+logging:
+  level:
+    org.hibernate.SQL: info
+#    org.hibernate.type: trace
+#    org.springframework.security: info
+
+jasypt:
+  encryptor:
+    password: ${SECRETKEY}
+    bean: jasyptStringEncryptor

@@ -25,6 +25,8 @@ import study.issue_mate.jwt.JwtBlacklistService;
 import study.issue_mate.jwt.LoginFilter;
 import study.issue_mate.util.RedisUtil;
 
+import java.util.Collections;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -59,9 +61,10 @@ public class SecurityConfig {
         http.logout((auth) -> auth.disable());
 
         http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/health/**").permitAll()
-                .requestMatchers("/login").permitAll()
-                .requestMatchers("/reissue", "/refreshCheck").permitAll()
+                        .requestMatchers("/test/**").permitAll()
+                        .requestMatchers("/health/**").permitAll()
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/reissue", "/refreshCheck").permitAll()
 //                .requestMatchers("/error").permitAll()
                 // Swagger 문서 접근 가능
                 .requestMatchers(
