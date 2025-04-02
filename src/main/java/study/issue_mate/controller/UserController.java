@@ -1,0 +1,26 @@
+package study.issue_mate.controller;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import study.issue_mate.common.ApiResponse;
+import study.issue_mate.dto.SignUpRequestDto;
+import study.issue_mate.service.UserService;
+
+@RestController
+@RequestMapping("/api/user")
+@RequiredArgsConstructor
+public class UserController {
+    private final UserService userService;
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpRequestDto request) {
+        userService.signUp(request);
+        return ResponseEntity.ok(ApiResponse);
+    }
+}
