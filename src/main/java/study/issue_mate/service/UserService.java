@@ -23,8 +23,9 @@ public class UserService {
         validateDuplicateEmail(signUpRequestDto.getUserEmail());
 
         User signUpUser = User.builder()
-                .username(signUpRequestDto.getUsername())
+                .name(signUpRequestDto.getName())
                 .phone(signUpRequestDto.getPhone())
+                .userEmail(signUpRequestDto.getUserEmail())
                 .password(encodedPassword)
                 .build();
 

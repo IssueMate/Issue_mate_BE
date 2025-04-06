@@ -1,6 +1,5 @@
 package study.issue_mate.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,9 +9,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
-public class SignUpRequestDto {
-    private String userEmail;
-    private String password;
-    private String name;
-    private String phone;
+public class RequestCreateProjectDto {
+    private String projectName;
+    private String description;
 }
