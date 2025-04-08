@@ -17,10 +17,10 @@ public class Issue extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Status status;
 
-//    private  priority;
+//    private  priority; // 우선순위
 
-//    private User assignee;
-//    private User reporter;
+//    private User assignee; // 담당자
+//    private User reporter; // 보고자
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_issue_id")
