@@ -1,6 +1,8 @@
 package study.issue_mate.common.aop;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -23,7 +25,11 @@ import java.util.Map;
 @Slf4j
 public class LogAspect {
     private final ObjectMapper objectMapper = new ObjectMapper();
-
+    public LogAspect() {
+        // ObjectMapper 생성 시 JavaTimeModule을 등록
+        this.objectMapper.registerModule(new JavaTimeModule()); // JavaTimeModule 추가
+        this.objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); // 타임스탬프 포맷 비활성화
+    }
     @Pointcut("execution(* *.*.controller..*.*(..))")
     private void controllerLogging() {}
 

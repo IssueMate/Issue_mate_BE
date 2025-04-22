@@ -66,6 +66,7 @@ public class GlobalExceptionHandler {
     // 500 Internal Server Error 처리 (서버 내부 오류)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<?>> handleGlobalException(Exception ex) {
+        log.error("Unhandled exception caught in GlobalExceptionHandler", ex);
         ApiResponse<?> errorResponse = new ApiResponse<>(
                 false,
                 ex.getMessage(),

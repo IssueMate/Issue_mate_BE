@@ -1,5 +1,6 @@
 package study.issue_mate.jwt;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,10 +11,13 @@ import java.util.Collection;
 import java.util.List;
 
 @Slf4j
+@Getter
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
     private final User user;
+
+
 
     // 추후 role 확정 후 적용
 //    @Override

@@ -2,6 +2,7 @@ package study.issue_mate.config;
 
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -19,6 +21,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import study.issue_mate.jwt.CustomLogoutFilter;
+import study.issue_mate.jwt.CustomUserDetailService;
 import study.issue_mate.jwt.JWTFilter;
 import study.issue_mate.jwt.JWTProvider;
 import study.issue_mate.jwt.JwtBlacklistService;
@@ -52,7 +55,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
-        JwtBlacklistService jwtBlacklistService) throws Exception {
+        JwtBlacklistService jwtBlacklistService, CustomUserDetailService customUserDetailService) throws Exception {
         http.cors((cors) -> cors.configurationSource(corsConfigurationSource()));
 
         http.csrf((auth) -> auth.disable());
@@ -66,6 +69,7 @@ public class SecurityConfig {
                         .requestMatchers("/health/**").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/reissue", "/refreshCheck").permitAll()
+                        .requestMatchers("/api/project/**").authenticated()
 //                .requestMatchers("/error").permitAll()
                 // Swagger 문서 접근 가능
                 .requestMatchers(
@@ -78,10 +82,10 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
         );
 //        http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtProvider, authRepository, cartRepository), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JWTFilter(jwtProvider, jwtBlacklistService,customUserDetailService), LoginFilter.class);
         http.addFilterAt(
             new LoginFilter(authenticationManager(authenticationConfiguration), jwtProvider,
                 redisUtil), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(new JWTFilter(jwtProvider, jwtBlacklistService), LoginFilter.class);
 //        http.addFilterBefore(new CustomLogoutFilter(jwtProvider, authRepository), LogoutFilter.class);
         http.addFilterBefore(new CustomLogoutFilter(jwtProvider, redisUtil, jwtBlacklistService),
             LogoutFilter.class);
@@ -99,6 +103,7 @@ public class SecurityConfig {
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
+
     }
 
     @Bean
