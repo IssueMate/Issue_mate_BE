@@ -13,6 +13,7 @@ public class ProjectService {
 
     public void save(RequestCreateProjectDto requestCreateProjectDto) {
 
+        //이미 존재하는 프로젝트 키인지 확인 필요, 추후 수정
         Project project = Project.builder()
                 .projectName(requestCreateProjectDto.getProjectName())
                 .projectKey(Project.generateProjectKey(requestCreateProjectDto.getProjectName()))

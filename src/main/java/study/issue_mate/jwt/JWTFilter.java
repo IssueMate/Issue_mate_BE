@@ -55,12 +55,14 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-        String userEmail = jwtProvider.getUsernameFromToken(accessToken);
 
         // 유저 권한 추출 필요.
 //        User user = new User();
 //        user.setUserEmail(userEmail);
 //        CustomUserDetails customUserDetails = new CustomUserDetails(user);
+
+        // 유저 권한 정의 전까지는 String 으로 일단 사용
+        String userEmail = jwtProvider.getUsernameFromToken(accessToken);
 
         // 스프링 시큐리티 인증 토큰 생성
 //        Authentication authenticationToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, null);

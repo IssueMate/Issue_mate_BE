@@ -1,5 +1,5 @@
 package study.issue_mate.entity.enums;
 
-public enum Issue_type {
+public enum IssueType {
     TASK,SUB_TASK,BUG;
 }
