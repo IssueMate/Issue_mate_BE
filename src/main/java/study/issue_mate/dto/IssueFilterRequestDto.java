@@ -2,11 +2,13 @@ package study.issue_mate.dto;
 
 
 import lombok.Getter;
+import lombok.Setter;
 import study.issue_mate.entity.Issue;
 
 import java.time.LocalDate;
 
 @Getter
+@Setter
 public class IssueFilterRequestDto {
     // -- 추가 구현 필터
     // 나에게 할당은 추후 구현

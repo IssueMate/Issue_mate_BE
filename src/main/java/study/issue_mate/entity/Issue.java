@@ -1,6 +1,7 @@
 package study.issue_mate.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import study.issue_mate.dto.IssueCreateRequestDto;
 import study.issue_mate.entity.base.BaseEntity;
@@ -12,6 +13,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Entity
+@Getter
 @NoArgsConstructor
 public class Issue extends BaseEntity {
     @Id @GeneratedValue
@@ -23,7 +25,8 @@ public class Issue extends BaseEntity {
     private Long issueNumber;
 
     private String summary;
-    private String description;
+
+    private String description; // 에디터로 작성된 내용 --> 우선 단순 String 으로 처리. 추후 변경 필요.
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Status status;
@@ -78,4 +81,17 @@ public class Issue extends BaseEntity {
 //        return "";
 //    }
 
+
+
+
+    //--------------------------------------------------------------
+    // 동시에 여러 항목이 수정되지 않는것으로 확인.
+    // 수정할 수 있는 항목이 어떤것들인지 파악필요, 우선은 요약 및 상세 내용 정도만 수정 처리 구현 되도록 처리
+    public void changeSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public void changeDescription(String description) {
+        this.description = description;
+    }
 }
