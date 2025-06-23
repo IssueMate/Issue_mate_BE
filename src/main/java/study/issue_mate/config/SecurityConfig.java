@@ -61,11 +61,12 @@ public class SecurityConfig {
         http.logout((auth) -> auth.disable());
 
         http.authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/user/signup").permitAll()
-                        .requestMatchers("/test/**").permitAll()
-                        .requestMatchers("/health/**").permitAll()
-                        .requestMatchers("/login").permitAll()
-                        .requestMatchers("/reissue", "/refreshCheck").permitAll()
+                .requestMatchers("/api/user/signup").permitAll()
+                .requestMatchers("/test/**").permitAll()
+                .requestMatchers("/health/**").permitAll()
+                .requestMatchers("/login").permitAll()
+                .requestMatchers("/reissue", "/refreshCheck").permitAll()
+                .requestMatchers("/auth/kakao/login","/auth/login","/auth/kakao/callback","/").permitAll()
 //                .requestMatchers("/error").permitAll()
                 // Swagger 문서 접근 가능
                 .requestMatchers(

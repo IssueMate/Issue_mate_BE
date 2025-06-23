@@ -14,7 +14,7 @@ import study.issue_mate.exception.CustomException;
 
 @Slf4j
 @RestControllerAdvice
-@Hidden // GlobalExceptionHandler swagger 적용 처리 여부 확인
+@Hidden // Swagger에서 특정 컨트롤러나 메서드 숨김을 위한 어노테이션
 public class GlobalExceptionHandler {
 
     // 400 Bad Request 처리 (유효성 검사 실패)
