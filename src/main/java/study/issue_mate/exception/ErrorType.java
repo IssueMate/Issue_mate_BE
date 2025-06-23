@@ -10,7 +10,10 @@ import study.issue_mate.common.ErrorCode;
 public enum ErrorType implements ErrorCode {
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다."),
     ALREADY_EXISTS(HttpStatus.CONFLICT, "사용중인 이메일입니다."),
-    TEST_ERROR(HttpStatus.BAD_REQUEST, "테스트 에러");
+    TEST_ERROR(HttpStatus.BAD_REQUEST, "테스트 에러"),
+
+    ISSUE_NOT_FOUNT(HttpStatus.NOT_FOUND, "해당 이슈를 찾을 수 없습니다.");
+
 
     private final HttpStatus status;
     private final String desc;

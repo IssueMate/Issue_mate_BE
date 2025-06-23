@@ -18,6 +18,8 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_id")
     private Long id;
 
+    // 조회 키로 UUID 적용?
+
     @Column(nullable = false, unique = true)
     private String userEmail;
     private String password;
