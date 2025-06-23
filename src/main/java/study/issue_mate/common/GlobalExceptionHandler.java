@@ -1,6 +1,7 @@
 package study.issue_mate.common;
 
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import study.issue_mate.exception.CustomException;
 
 @Slf4j
 @RestControllerAdvice
+@Hidden // Swagger에서 특정 컨트롤러나 메서드 숨김을 위한 어노테이션
 public class GlobalExceptionHandler {
 
     // 400 Bad Request 처리 (유효성 검사 실패)

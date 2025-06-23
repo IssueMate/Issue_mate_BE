@@ -21,3 +21,10 @@ spring:
 
 #api_url: http://localhost:8080
 next_public_base_url: http://localhost:3000
+
+##kakao login
+kakao:
+  client:
+    id: ${KAKAO_RESTAPIKEY}
+  redirect:
+    uri: ${KAKAO_REDIRECTURI}

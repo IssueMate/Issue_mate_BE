@@ -59,9 +59,11 @@ public class SecurityConfig {
         http.logout((auth) -> auth.disable());
 
         http.authorizeHttpRequests((auth) -> auth
+                .requestMatchers("/test/**").permitAll()
                 .requestMatchers("/health/**").permitAll()
                 .requestMatchers("/login").permitAll()
                 .requestMatchers("/reissue", "/refreshCheck").permitAll()
+                .requestMatchers("/auth/kakao/login","/auth/login","/auth/kakao/callback","/").permitAll()
 //                .requestMatchers("/error").permitAll()
                 // Swagger 문서 접근 가능
                 .requestMatchers(
@@ -70,7 +72,6 @@ public class SecurityConfig {
                     "/v3/api-docs.yaml",
                     "/v3/api-docs/swagger-config"
                 ).permitAll()
-
                 .anyRequest().authenticated()
         );
 //        http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtProvider, authRepository, cartRepository), UsernamePasswordAuthenticationFilter.class);
