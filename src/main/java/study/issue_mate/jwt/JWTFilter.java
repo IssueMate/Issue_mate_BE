@@ -25,7 +25,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        log.info("JWT Filter is processing the request");
+//        log.info("JWT Filter is processing the request");
 
         String authorization = request.getHeader("Authorization");
 
@@ -57,14 +57,14 @@ public class JWTFilter extends OncePerRequestFilter {
 
         String userEmail = jwtProvider.getUsernameFromToken(accessToken);
 
-        User user = new User();
-
-        user.setUserEmail(userEmail);
-
-        CustomUserDetails customUserDetails = new CustomUserDetails(user);
+        // 유저 권한 추출 필요.
+//        User user = new User();
+//        user.setUserEmail(userEmail);
+//        CustomUserDetails customUserDetails = new CustomUserDetails(user);
 
         // 스프링 시큐리티 인증 토큰 생성
-        Authentication authenticationToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, null);
+//        Authentication authenticationToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, null);
+        Authentication authenticationToken = new UsernamePasswordAuthenticationToken(userEmail, null, null);
 
         // 세션에 사용자 등룍
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);

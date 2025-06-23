@@ -4,20 +4,24 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import study.issue_mate.entity.base.BaseTimeEntity;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User extends BaseTimeEntity {
     @Id @GeneratedValue
     @Column(name = "user_id")
     private Long id;
 
-    private String password;
-    private String username;
+    @Column(nullable = false, unique = true)
     private String userEmail;
+    private String password;
+    private String name;
     private String phone;
 
     // 소셜로그인 구분 필드

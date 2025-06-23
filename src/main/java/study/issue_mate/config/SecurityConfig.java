@@ -25,6 +25,8 @@ import study.issue_mate.jwt.JwtBlacklistService;
 import study.issue_mate.jwt.LoginFilter;
 import study.issue_mate.util.RedisUtil;
 
+import java.util.Collections;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -59,6 +61,7 @@ public class SecurityConfig {
         http.logout((auth) -> auth.disable());
 
         http.authorizeHttpRequests((auth) -> auth
+                .requestMatchers("/api/user/signup").permitAll()
                 .requestMatchers("/test/**").permitAll()
                 .requestMatchers("/health/**").permitAll()
                 .requestMatchers("/login").permitAll()
@@ -72,6 +75,7 @@ public class SecurityConfig {
                     "/v3/api-docs.yaml",
                     "/v3/api-docs/swagger-config"
                 ).permitAll()
+
                 .anyRequest().authenticated()
         );
 //        http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtProvider, authRepository, cartRepository), UsernamePasswordAuthenticationFilter.class);

@@ -141,7 +141,7 @@ public class KakaoAuthService {
     private User createUserFromKakao(KakaoUserInfoDto userInfo) {
         User user = new User();
         user.setUserEmail(userInfo.getEmail());
-        user.setUsername(userInfo.getNickname());
+        user.setName(userInfo.getNickname());
         user.setProvider("KAKAO");
         user.setProviderId(userInfo.getKakaoId());
         return user;

@@ -7,25 +7,28 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
         #        show_sql: true
         format_sql: true
         default_batch_fetch_size: 100
-    open-in-view: false
+
+  jwt:
+    secretkey: ${JWT_SECRETKEY}
 
   data:
     redis:
       host: localhost
       port: 6379
 
-#api_url: http://localhost:8080
-next_public_base_url: http://localhost:3000
+logging:
+  level:
+    org.hibernate.SQL: info
+#    org.hibernate.type: trace
+#    org.springframework.security: info
 
-##kakao login
-kakao:
-  client:
-    id: ${KAKAO_RESTAPIKEY}
-  redirect:
-    uri: ${KAKAO_REDIRECTURI}
+jasypt:
+  encryptor:
+    password: ${SECRETKEY}
+    bean: jasyptStringEncryptor

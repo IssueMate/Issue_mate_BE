@@ -28,11 +28,16 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
 
 	implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
 	implementation 'com.querydsl:querydsl-apt'
 
-	// 추후 로그 직접 구현 변경
+//	implementation 'net.logstash.logback:logstash-logback-encoder:8.0'
+	implementation 'ch.qos.logback.contrib:logback-json-classic:0.1.5'
+	implementation 'ch.qos.logback.contrib:logback-jackson:0.1.5'
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
+
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.2'
 	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
 	implementation 'org.springframework.boot:spring-boot-starter-security'

@@ -8,15 +8,15 @@ public class LinkedIssue {
     @Column(name = "linked_issue_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "issue_id")
     private Issue issue;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "source_issue_id", nullable = false)
     private Issue sourceIssue;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "target_issue_id", nullable = false)
     private Issue targetIssue;
 
