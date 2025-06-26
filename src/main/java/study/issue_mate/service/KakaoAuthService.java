@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import study.issue_mate.dto.KakaoSocialSignUpdto;
 import study.issue_mate.dto.KakaoUserInfoDto;
 import study.issue_mate.entity.User;
 import study.issue_mate.jwt.JWTProvider;
@@ -32,11 +33,12 @@ public class KakaoAuthService {
 
     private final UserRepository userRepository;
     private final JWTProvider jwtProvider;
+    private final ObjectMapper objectMapper;
 
-    // 카카오 로그인 함수 (인가코드 -> JWT)
+    // 카카오 로그인 함수: 회원 있으면 JWT 리턴, 없으면 예외(회원가입)
     @Transactional
     public String kakaoLogin(String code) {
-        log.info("[KakaoService] code 일부: {}", code.substring(0, Math.min(10, code.length())));
+        log.info("[KakaoService] 로그인: code ={}: {}", code.substring(0, Math.min(10, code.length())));
         // (1) code로 카카오 access token 얻기
         String accessToken = getKakaoAccessToken(code);
         // (2) access token으로 사용자 정보 가져오기
@@ -47,13 +49,29 @@ public class KakaoAuthService {
 
         if (user == null) {
             // (3-1) 신규 회원이면 회원 가입 페이지로 이동하도록 예외 던지거나 redirect URL로 반환
-            user = createUserFromKakao(userInfo);
-            userRepository.save(user);
+           throw new IllegalStateException("회원 정보가 없습니다. 회원가입이 필요합니다.");
         }
 
-        // (4) JWT 토큰 발급
+        // (4) 회원일 경우 JWT 토큰 발급
         String jwt = jwtProvider.generateToken("access", user.getUserEmail(), 360000L);
         log.info("[KakaoService] JWT 토큰 발급 (일부): {}", jwt.substring(0, 10));
+        return jwt;
+    }
+
+    // 소셜 회원가입(추가정보 DTO로 가입)
+    @Transactional
+    public String kakaoRegister(KakaoSocialSignUpdto signUpdto) {
+        log.info("[KakaoService] 카카오 회원가입 시도: email={}, kakaoId={}", signUpdto.getEmail(), signUpdto.getKakaoId());
+        if (userRepository.findByProviderAndProviderId("KAKAO", signUpdto.getKakaoId()).isPresent()) {
+            throw new IllegalArgumentException("이미 가입된 카카오 계정입니다.");
+        }
+        User user = createUserFromKakao(signUpdto);
+        userRepository.save(user);
+
+
+        // 가입 직후 바로 JWT 토큰 발급
+        String jwt = jwtProvider.generateToken("access", user.getUserEmail(), 360000L);
+        log.info("[KakaoService] 카카오 회원가입 성공: email={}, jwt(일부): {}", user.getUserEmail(), jwt.substring(0, 10));
         return jwt;
     }
 
@@ -118,8 +136,6 @@ public class KakaoAuthService {
 
         log.info("[KakaoService] 사용자 정보 응답: {}", response.getBody());
 
-        ObjectMapper objectMapper = new ObjectMapper();
-
         try {
             // JSON 파싱 (트리형태로 접근)
             JsonNode root = objectMapper.readTree(response.getBody());
@@ -138,12 +154,12 @@ public class KakaoAuthService {
     }
 
     // 3. 카카오 정보 -> User 엔티티로 변환 (최소값만)
-    private User createUserFromKakao(KakaoUserInfoDto userInfo) {
+    private User createUserFromKakao(KakaoSocialSignUpdto dto) {
         User user = new User();
-        user.setUserEmail(userInfo.getEmail());
-        user.setName(userInfo.getNickname());
+        user.setUserEmail(dto.getEmail());
+        user.setName(dto.getNickname());
         user.setProvider("KAKAO");
-        user.setProviderId(userInfo.getKakaoId());
+        user.setProviderId(dto.getKakaoId());
         return user;
     }
 }
