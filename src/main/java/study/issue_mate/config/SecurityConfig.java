@@ -66,7 +66,7 @@ public class SecurityConfig {
                 .requestMatchers("/health/**").permitAll()
                 .requestMatchers("/login").permitAll()
                 .requestMatchers("/reissue", "/refreshCheck").permitAll()
-                .requestMatchers("/auth/kakao/login","/auth/login","/auth/kakao/callback","/").permitAll()
+                .requestMatchers("/auth/kakao/login","/auth/login","/auth/kakao/callback", "/auth/kakao/register","/").permitAll()
 //                .requestMatchers("/error").permitAll()
                 // Swagger 문서 접근 가능
                 .requestMatchers(

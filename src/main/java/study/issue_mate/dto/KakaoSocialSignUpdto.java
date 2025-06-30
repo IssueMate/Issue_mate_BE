@@ -7,11 +7,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class KakaoUserInfoDto {
+@AllArgsConstructor
+public class KakaoSocialSignUpdto {
+    private String kakaoId;
     private String email;
     private String name;
-    private String kakaoId; // 카카오에서 받은 고유 식별자
     private String phone;
+    private boolean termsAgreed;
 }
