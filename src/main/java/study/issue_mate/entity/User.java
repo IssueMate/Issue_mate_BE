@@ -34,4 +34,7 @@ public class User extends BaseTimeEntity {
 //    private Status status;
     private String profile;
 
+    // 약관 동의
+    private boolean termsAgreed;
+
 }

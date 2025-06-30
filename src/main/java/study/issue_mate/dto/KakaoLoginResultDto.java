@@ -9,10 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class KakaoSocialSignUpdto {
+public class KakaoLoginResultDto {
+    private boolean newUser;
+    private String jwt;
     private String kakaoId;
     private String email;
     private String name;
-    private String phone;
-    private boolean termsAgreed;
+
 }
