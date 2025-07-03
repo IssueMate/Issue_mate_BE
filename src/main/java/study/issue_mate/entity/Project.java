@@ -9,10 +9,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import study.issue_mate.entity.base.BaseEntity;
 
 @Entity
+@Getter
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
