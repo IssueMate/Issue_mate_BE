@@ -61,12 +61,14 @@ public class SecurityConfig {
         http.logout((auth) -> auth.disable());
 
         http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/api/user/signup").permitAll()
-                .requestMatchers("/test/**").permitAll()
-                .requestMatchers("/health/**").permitAll()
-                .requestMatchers("/login").permitAll()
-                .requestMatchers("/reissue", "/refreshCheck").permitAll()
-                .requestMatchers("/auth/kakao/login","/auth/login","/auth/kakao/callback", "/auth/kakao/register","/").permitAll()
+                        .requestMatchers("/api/user/**").permitAll()
+                        .requestMatchers("/test/**").permitAll()
+                        .requestMatchers("/health/**").permitAll()
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/reissue", "/refreshCheck").permitAll()
+                        .requestMatchers("/api/project/**").authenticated()
+                        .requestMatchers("/auth/kakao/login","/auth/login","/auth/kakao/callback", "/auth/kakao/register","/").permitAll()
+
 //                .requestMatchers("/error").permitAll()
                 // Swagger 문서 접근 가능
                 .requestMatchers(
@@ -82,7 +84,6 @@ public class SecurityConfig {
         http.addFilterAt(
             new LoginFilter(authenticationManager(authenticationConfiguration), jwtProvider,
                 redisUtil), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(new JWTFilter(jwtProvider, jwtBlacklistService), LoginFilter.class);
 //        http.addFilterBefore(new CustomLogoutFilter(jwtProvider, authRepository), LogoutFilter.class);
         http.addFilterBefore(new CustomLogoutFilter(jwtProvider, redisUtil, jwtBlacklistService),
             LogoutFilter.class);

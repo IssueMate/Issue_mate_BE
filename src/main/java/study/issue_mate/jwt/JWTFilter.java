@@ -5,6 +5,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,10 +20,13 @@ import java.io.IOException;
 
 @Slf4j
 @RequiredArgsConstructor
+
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTProvider jwtProvider;
     private final JwtBlacklistService jwtBlacklistService;
+    private final CustomUserDetailService customUserDetailService;
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -66,9 +71,13 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 스프링 시큐리티 인증 토큰 생성
 //        Authentication authenticationToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, null);
-        Authentication authenticationToken = new UsernamePasswordAuthenticationToken(userEmail, null, null);
+//        Authentication authenticationToken = new UsernamePasswordAuthenticationToken(userEmail, null, null);
 
-        // 세션에 사용자 등룍
+        CustomUserDetails customUserDetails = (CustomUserDetails) customUserDetailService.loadUserByUsername(userEmail);
+
+        Authentication authenticationToken =
+            new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
+
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
         filterChain.doFilter(request, response);

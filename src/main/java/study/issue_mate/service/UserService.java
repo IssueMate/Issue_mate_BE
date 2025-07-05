@@ -31,6 +31,10 @@ public class UserService {
 
         userRepository.save(signUpUser);
     }
+    @Transactional
+    public boolean checkEmail(String userEmail){
+        return userRepository.existsByUserEmail(userEmail);
+    }
 
     private void validateDuplicateEmail(String email) {
         if (userRepository.existsByUserEmail(email)) {

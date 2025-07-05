@@ -2,8 +2,11 @@ package study.issue_mate.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,11 +31,12 @@ public class Project extends BaseEntity {
 
     private String description;
 
-    // 추후 적용
-    //private Status status;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User owner;
 
-//    private User owner;
-
+     //추후 추가 예정
+     //   private Status status;
     public static String generateProjectKey(String projectName) {
         String[] words;
 
@@ -66,5 +70,12 @@ public class Project extends BaseEntity {
         spaced = spaced.trim();
 
         return spaced.split("\\s+");
+    }
+
+    public void update(String projectName, String description) {
+        this.projectName = projectName;
+        this.description = description;
+        // 프로젝트 키도 이름에 따라 재생성
+        this.projectKey = generateProjectKey(projectName);
     }
 }
