@@ -61,7 +61,7 @@ public class SecurityConfig {
         http.logout((auth) -> auth.disable());
 
         http.authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/user/signup").permitAll()
+                        .requestMatchers("/api/user/**").permitAll()
                         .requestMatchers("/test/**").permitAll()
                         .requestMatchers("/health/**").permitAll()
                         .requestMatchers("/login").permitAll()

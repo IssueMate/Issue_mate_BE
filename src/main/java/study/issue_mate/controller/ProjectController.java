@@ -32,17 +32,17 @@ public class ProjectController {
         }
         log.info("Logged in user: {}", userDetails.getUsername());
 
-        projectService.save(request,userDetails.getUser());
+        projectService.save(request);
 
         return ResponseEntity.ok(ApiResponse.success(SuccessType.CREATE_SUCCESS));
     }
-    @PutMapping("/{projectId}")
-    public ResponseEntity<?> updateProject(@PathVariable Long projectId, @RequestBody RequestUpdateProjectDto request){
-
-        projectService.update(projectId,request);
-
-        return ResponseEntity.ok(ApiResponse.success(SuccessType.UPDATE_SUCCESS));
-    }
+//    @PutMapping("/{projectId}")
+//    public ResponseEntity<?> updateProject(@PathVariable Long projectId, @RequestBody RequestUpdateProjectDto request){
+//
+//        projectService.update(projectId,request);
+//
+//        return ResponseEntity.ok(ApiResponse.success(SuccessType.UPDATE_SUCCESS));
+//    }
     //내 프로젝트 찾기
 //    GetMapping
 
