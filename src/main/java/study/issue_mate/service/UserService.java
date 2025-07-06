@@ -1,12 +1,10 @@
 package study.issue_mate.service;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Request;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.issue_mate.dto.RequestUpdateUserDto;
-import study.issue_mate.dto.ResponseUpdateUserDto;
 import study.issue_mate.dto.SignUpRequestDto;
 import study.issue_mate.entity.User;
 import study.issue_mate.exception.CustomException;

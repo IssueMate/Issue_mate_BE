@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import study.issue_mate.common.ApiResponse;
 import study.issue_mate.common.SuccessType;
 import study.issue_mate.dto.RequestUpdateUserDto;
-import study.issue_mate.dto.ResponseUpdateUserDto;
 import study.issue_mate.dto.SignUpRequestDto;
 import study.issue_mate.jwt.CustomUserDetails;
 import study.issue_mate.service.UserService;
