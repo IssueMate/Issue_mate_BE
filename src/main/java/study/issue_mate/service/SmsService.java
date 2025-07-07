@@ -44,8 +44,9 @@ public class SmsService {
         }
 
         // Redis에 인증번호 저장 (3분 유효)
-        redisTemplate.opsForValue().set("SMS: AUTH" + phoneNumber, authCode, 3, TimeUnit.MINUTES);
-        log.info("[SMS] 인증번호 Redis 저장 - key: {}, code: {}", "SMS:AUTH:" + phoneNumber, authCode);
+        String redisKey = "SMS:AUTH:" + phoneNumber;
+        redisTemplate.opsForValue().set(redisKey, authCode, 3, TimeUnit.MINUTES);
+        log.info("[SMS] 인증번호 Redis 저장 - key: {}, code: {}", redisKey, authCode);
     }
 
     /*
