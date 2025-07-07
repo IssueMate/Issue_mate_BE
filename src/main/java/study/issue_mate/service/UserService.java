@@ -38,7 +38,7 @@ public class UserService {
 
     private void validateDuplicateEmail(String email) {
         if (userRepository.existsByUserEmail(email)) {
-            throw new CustomException(ErrorType.ALREADY_EXISTS);
+            throw new CustomException(ErrorType.ALREADY_EXISTS_EMAIL);
         }
     }
 }
