@@ -29,3 +29,8 @@ kakao:
     id: ${KAKAO_RESTAPIKEY}
   redirect:
     uri: ${KAKAO_REDIRECTURI}
+
+coolsms:
+  api-key: ${COOLSMS_API_KEY}
+  api-secret: ${COOLSMS_API_SECRET}
+  sender: "010-9205-9228"
