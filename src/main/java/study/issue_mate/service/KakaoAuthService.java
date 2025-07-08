@@ -26,6 +26,8 @@ import study.issue_mate.repository.UserRepository;
 @Service
 @RequiredArgsConstructor
 public class KakaoAuthService {
+
+    private final UserService userService;
     @Value("${kakao.client.id}")
     private String clientId;
 
@@ -73,6 +75,10 @@ public class KakaoAuthService {
     public String kakaoRegister(KakaoSocialSignUpdto signUpdto) {
         log.info("[카카오 회원가입] 카카오 회원가입 시도: kakaoId={}, email={}, name={}", signUpdto.getKakaoId(), signUpdto.getEmail(), signUpdto.getName());
 
+        // 휴대폰 번호 중복 체크
+        userService.validateDuplicatePhone(signUpdto.getPhone());
+
+        // 카카오 회원 중복 체크
         if (userRepository.findByProviderAndProviderId("KAKAO", signUpdto.getKakaoId()).isPresent()) {
             throw new IllegalArgumentException("이미 가입된 카카오 계정입니다.");
         }

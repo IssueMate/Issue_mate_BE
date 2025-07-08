@@ -13,6 +13,7 @@ import lombok.ToString;
 public class SignUpRequestDto {
     private String userEmail;
     private String password;
+    private String passwordConfirm;
     private String name;
     private String phone;
 }

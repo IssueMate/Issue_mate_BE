@@ -18,6 +18,7 @@ import study.issue_mate.dto.KakaoLoginResultDto;
 import study.issue_mate.dto.KakaoRegisterResponseDto;
 import study.issue_mate.dto.KakaoSocialSignUpdto;
 import study.issue_mate.dto.KakaoUserInfoDto;
+import study.issue_mate.exception.CustomException;
 import study.issue_mate.service.KakaoAuthService;
 
 @Slf4j
@@ -83,6 +84,11 @@ public class AuthController {
             String jwt = kakaoAuthService.kakaoRegister(signUpdto);
             return ResponseEntity.ok().body(
                 new KakaoRegisterResponseDto(jwt, "회원가입 성공")
+            );
+        } catch (CustomException e) {
+            log.warn("[카카오 회원가입] 커스텀 에러(휴대폰번호 중복): {}", e.getMessage());
+            return ResponseEntity.status(e.getErrorType().getStatus()).body(
+                new KakaoRegisterResponseDto(null, e.getErrorType().getDesc())
             );
         } catch (IllegalArgumentException e) {
             log.warn("[카카오 회원가입] 중복 가입 시도: {}", e.getMessage());

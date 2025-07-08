@@ -18,6 +18,11 @@ public class UserService {
 
     @Transactional
     public void signUp(SignUpRequestDto signUpRequestDto){
+        //비밀번호 확인 불일치 시 에러 반환
+        if(!signUpRequestDto.getPassword().equals(signUpRequestDto.getPasswordConfirm())){
+            throw new CustomException(ErrorType.PASSWORD_NOT_MATCHED);
+        }
+
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(signUpRequestDto.getPassword());
 
@@ -68,7 +73,13 @@ public class UserService {
 
     private void validateDuplicateEmail(String email) {
         if (userRepository.existsByUserEmail(email)) {
-            throw new CustomException(ErrorType.ALREADY_EXISTS);
+            throw new CustomException(ErrorType.ALREADY_EXISTS_EMAIL);
+        }
+    }
+
+    public void validateDuplicatePhone(String phone) {
+        if (userRepository.findByPhone(phone).isPresent()) {
+            throw new CustomException(ErrorType.ALREADY_EXISTS_PHONE);
         }
     }
 }

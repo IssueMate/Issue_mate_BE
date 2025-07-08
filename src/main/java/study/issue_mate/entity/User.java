@@ -24,6 +24,8 @@ public class User extends BaseTimeEntity {
     private String userEmail;
     private String password;
     private String name;
+
+    @Column(unique = true)
     private String phone;
 
     // 소셜로그인 구분 필드
