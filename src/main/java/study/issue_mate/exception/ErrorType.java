@@ -14,7 +14,10 @@ public enum ErrorType implements ErrorCode {
     ALREADY_EXISTS_PHONE(HttpStatus.CONFLICT, "사용중인 휴대폰번호입니다."),
     TEST_ERROR(HttpStatus.BAD_REQUEST, "테스트 에러"),
 
-    ISSUE_NOT_FOUNT(HttpStatus.NOT_FOUND, "해당 이슈를 찾을 수 없습니다.");
+    ISSUE_NOT_FOUNT(HttpStatus.NOT_FOUND, "해당 이슈를 찾을 수 없습니다."),
+
+    PASSWORD_NOT_MATCHED(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다"),
+    INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호 형식이 유효하지 않습니다");
 
 
     private final HttpStatus status;
