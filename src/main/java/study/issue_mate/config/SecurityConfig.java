@@ -78,6 +78,10 @@ public class SecurityConfig {
                     "/v3/api-docs/swagger-config"
                 ).permitAll()
 
+                .requestMatchers(
+                    "/sms/**"
+                ).permitAll()
+
                 .anyRequest().authenticated()
         );
 //        http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtProvider, authRepository, cartRepository), UsernamePasswordAuthenticationFilter.class);
