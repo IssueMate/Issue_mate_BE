@@ -1,5 +1,6 @@
 package study.issue_mate.controller;
 
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class SmsController {
         try {
             smsService.sendAuthCode(phone);
             log.info("[SMS] 인증번호 발송 요청 완료 - to: {}", phone);
-            return ResponseEntity.ok().body("인증번호가 전송되었습니다.");
+            return ResponseEntity.ok().body(Map.of("message", "인증번호가 전송되었습니다."));
         } catch (Exception e) {
             log.error("[SMS] 인증번호 발송 요청 실패 - to: {}, 에러: {}", phone, e.getMessage(), e);
             return ResponseEntity.internalServerError().body("SMS 발송에 실패했습니다: " + e.getMessage());
@@ -43,10 +44,10 @@ public class SmsController {
 
         if (result) {
             log.info("[SMS] 인증번호 검증 성공 - to: {}", phone);
-            return ResponseEntity.ok().body("인증 성공!");
+            return ResponseEntity.ok().body(Map.of("message","인증되었습니다."));
         } else {
             log.warn("[SMS] 인증번호 검증 실패 - to: {}", phone);
-            return ResponseEntity.badRequest().body("인증 실패: 인증번호가 일치하지 않습니다.");
+            return ResponseEntity.badRequest().body(Map.of("message", "인증번호가 일치하지 않습니다"));
         }
     }
 }
