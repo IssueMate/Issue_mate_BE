@@ -28,7 +28,7 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@Valid @RequestBody SignUpRequestDto request) {
         userService.signUp(request);
-        return ResponseEntity.ok(ApiResponse.success(SuccessType.INQUERY_SUCCESS));
+        return ResponseEntity.ok(ApiResponse.success(SuccessType.CREATE_SUCCESS));
     }
 
     @GetMapping("/checkEmail")
