@@ -37,6 +37,7 @@ public class KakaoAuthService {
     private final UserRepository userRepository;
     private final JWTProvider jwtProvider;
     private final ObjectMapper objectMapper;
+    private final SmsService smsService;
 
     // 카카오 로그인 함수: 회원 있으면 JWT 리턴, 없으면 예외(회원가입)
     @Transactional(readOnly = true)
@@ -74,6 +75,7 @@ public class KakaoAuthService {
     @Transactional
     public String kakaoRegister(KakaoSocialSignUpdto signUpdto) {
         log.info("[카카오 회원가입] 카카오 회원가입 시도: kakaoId={}, email={}, name={}", signUpdto.getKakaoId(), signUpdto.getEmail(), signUpdto.getName());
+
 
         // 휴대폰 번호 중복 체크
         userService.validateDuplicatePhone(signUpdto.getPhone());
