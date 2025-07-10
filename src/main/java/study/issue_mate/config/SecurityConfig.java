@@ -67,6 +67,7 @@ public class SecurityConfig {
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/reissue", "/refreshCheck").permitAll()
                         .requestMatchers("/api/project/**").authenticated()
+                        .requestMatchers("/api/email/**").permitAll()
                         .requestMatchers("/auth/kakao/login","/auth/login","/auth/kakao/callback", "/auth/kakao/register","/").permitAll()
 
 //                .requestMatchers("/error").permitAll()
