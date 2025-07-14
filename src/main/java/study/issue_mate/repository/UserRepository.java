@@ -14,4 +14,8 @@ public interface UserRepository  extends JpaRepository<User,Long> {
     Optional<User> findByProviderAndProviderId(String provider, String providerId); // 로컬과 소셜로그인 중복방지 메서드
 
     Optional<User> findByPhone(String phone);
+
+    boolean existsByNameAndPhone(String name, String phoneNumber);
+
+    User findByNameAndPhone(String name, String phoneNumber);
 }
